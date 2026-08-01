@@ -1,21 +1,21 @@
-// =========================
-// NOX TRANSFER
-// =========================
-
-
-// Navbar dinamica
+// =============================
+// NAVBAR BLUR ON SCROLL
+// =============================
 
 const nav = document.querySelector("nav");
 
-window.addEventListener("scroll", () => {
 
-    if(window.scrollY > 50){
+window.addEventListener("scroll",()=>{
 
-        nav.classList.add("scrolled");
+    if(window.scrollY > 80){
+
+        nav.style.background = "rgba(255,255,255,.9)";
+        nav.style.boxShadow = "0 10px 30px rgba(0,0,0,.08)";
 
     }else{
 
-        nav.classList.remove("scrolled");
+        nav.style.background = "rgba(255,255,255,.75)";
+        nav.style.boxShadow = "none";
 
     }
 
@@ -23,159 +23,244 @@ window.addEventListener("scroll", () => {
 
 
 
-// =========================
-// Reveal Animation
-// =========================
 
-const revealElements = document.querySelectorAll(
-".story, .service, .numbers div, .vehicle, .step, .cta"
+
+// =============================
+// SCROLL REVEAL PREMIUM
+// =============================
+
+
+const elements = document.querySelectorAll(
+".service, .steps div, .cars div, .reviews div, .experience"
 );
 
-const observer = new IntersectionObserver((entries)=>{
+
+elements.forEach(el=>{
+
+    el.style.opacity="0";
+    el.style.transform="translateY(50px)";
+    el.style.transition="all .8s cubic-bezier(.2,.8,.2,1)";
+
+});
+
+
+
+const reveal = new IntersectionObserver((entries)=>{
+
 
 entries.forEach(entry=>{
+
 
 if(entry.isIntersecting){
 
-entry.target.classList.add("show");
+    entry.target.style.opacity="1";
+    entry.target.style.transform="translateY(0)";
 
 }
 
+
 });
+
 
 },{
-threshold:0.15
-});
-
-revealElements.forEach(el=>{
-
-el.classList.add("hidden");
-
-observer.observe(el);
-
+threshold:.15
 });
 
 
 
+elements.forEach(el=>{
 
-// =========================
-// Counter
-// =========================
-
-const counters = document.querySelectorAll(".numbers strong");
-
-let counterStarted = false;
-
-const counterObserver = new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting && !counterStarted){
-
-counterStarted = true;
-
-counters.forEach(counter=>{
-
-const text = counter.innerText;
-
-const number = parseInt(text.replace(/\D/g,""));
-
-let current = 0;
-
-const increment = Math.max(1, number / 80);
-
-const timer = setInterval(()=>{
-
-current += increment;
-
-if(current >= number){
-
-current = number;
-
-clearInterval(timer);
-
-}
-
-if(text.includes("%")){
-
-counter.innerText = Math.floor(current)+"%";
-
-}
-else if(text.includes("+")){
-
-counter.innerText = Math.floor(current)+"+";
-
-}
-else if(text.toLowerCase().includes("min")){
-
-counter.innerText = Math.floor(current)+" min";
-
-}
-else if(text.includes("/")){
-
-counter.innerText = text;
-
-clearInterval(timer);
-
-}
-else{
-
-counter.innerText = Math.floor(current);
-
-}
-
-},20);
+    reveal.observe(el);
 
 });
 
-}
-
-});
-
-},{
-threshold:.4
-});
-
-const numbers = document.querySelector(".numbers");
-
-if(numbers){
-
-counterObserver.observe(numbers);
-
-}
 
 
 
-// =========================
-// Hero Parallax
-// =========================
 
-const hero = document.querySelector("header");
+
+
+// =============================
+// HERO IMAGE PARALLAX
+// =============================
+
+
+const heroImage = document.querySelector(".hero-image img");
+
 
 window.addEventListener("scroll",()=>{
 
-const y = window.scrollY;
 
-hero.style.backgroundPosition = `center ${y * 0.35}px`;
+if(heroImage){
+
+let move = window.scrollY * 0.08;
+
+heroImage.style.transform =
+`translateY(${move}px)`;
+
+}
+
 
 });
 
 
 
 
-// =========================
-// Smooth Buttons
-// =========================
 
-document.querySelectorAll('a[href^="#"]').forEach(link=>{
 
-link.addEventListener("click",function(e){
+
+
+// =============================
+// BUTTON MICRO INTERACTION
+// =============================
+
+
+const buttons = document.querySelectorAll(
+"button,.btn"
+);
+
+
+
+buttons.forEach(button=>{
+
+
+button.addEventListener("mouseenter",()=>{
+
+
+button.style.transform="translateY(-3px)";
+
+
+button.style.transition=".3s";
+
+
+});
+
+
+
+button.addEventListener("mouseleave",()=>{
+
+
+button.style.transform="translateY(0)";
+
+
+});
+
+
+});
+
+
+
+
+
+
+
+// =============================
+// SEARCH BOX EFFECT
+// =============================
+
+
+const searchBox = document.querySelector(".search-box");
+
+
+if(searchBox){
+
+
+searchBox.addEventListener("click",()=>{
+
+
+searchBox.style.boxShadow =
+"0 25px 70px rgba(39,194,255,.25)";
+
+
+});
+
+
+
+searchBox.addEventListener("mouseleave",()=>{
+
+
+searchBox.style.boxShadow =
+"0 20px 50px rgba(0,0,0,.08)";
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+
+// =============================
+// FAKE PRICE CALCULATOR
+// =============================
+
+
+const calculate = document.querySelector(
+".search-box button"
+);
+
+
+
+if(calculate){
+
+
+calculate.addEventListener("click",()=>{
+
+
+calculate.innerHTML =
+"Calcolo in corso...";
+
+
+setTimeout(()=>{
+
+
+calculate.innerHTML =
+"Prezzo disponibile ✓";
+
+
+},1200);
+
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// =============================
+// SMOOTH ANCHOR
+// =============================
+
+
+document.querySelectorAll(
+'a[href^="#"]'
+)
+.forEach(link=>{
+
+
+link.addEventListener("click",(e)=>{
+
 
 e.preventDefault();
 
-const target = document.querySelector(
-this.getAttribute("href")
+
+const target =
+document.querySelector(
+link.getAttribute("href")
 );
+
+
 
 if(target){
 
@@ -187,41 +272,42 @@ behavior:"smooth"
 
 }
 
-});
 
 });
 
 
+});
 
 
-// =========================
-// Mouse Glow
-// =========================
 
-const glow = document.createElement("div");
 
-glow.className = "cursor-glow";
 
-document.body.appendChild(glow);
+
+
+// =============================
+// CURSOR EFFECT DESKTOP
+// =============================
+
+
+const cursor = document.createElement("div");
+
+
+cursor.className="cursor";
+
+
+document.body.appendChild(cursor);
+
+
 
 window.addEventListener("mousemove",(e)=>{
 
-glow.style.left = e.clientX + "px";
-glow.style.top = e.clientY + "px";
+
+cursor.style.left =
+e.clientX+"px";
+
+
+cursor.style.top =
+e.clientY+"px";
+
 
 });
-
-
-
-
-// =========================
-// Current Year
-// =========================
-
-const year = document.querySelector(".year");
-
-if(year){
-
-year.textContent = new Date().getFullYear();
-
-}
